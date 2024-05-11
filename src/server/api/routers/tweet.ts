@@ -99,11 +99,12 @@ export const tweetRouter = createTRPCRouter({
           createdAt: true,
         },
       });
+      const liked = tweet?.likes.some((like) => {
+        return like.userId === ctx.session?.user.id;
+      });
       return {
         tweet,
-        LikedByMe: tweet?.likes.some((like) => {
-          return like.userId === ctx.session?.user.id;
-        }),
+        LikedByMe: ctx.session?.user.id ? liked : null,
         likesCount: tweet?._count.likes,
       };
     }),

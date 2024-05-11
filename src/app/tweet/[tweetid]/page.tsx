@@ -29,7 +29,6 @@ export default function tweetPage({
 }: {
   params: { tweetid: string };
 }) {
-  const session = useSession();
   const router = useRouter();
   const { data, isLoading, isError } = api.tweet.TweetUser.useQuery({
     id: tweetid,
@@ -41,7 +40,7 @@ export default function tweetPage({
 
   return (
     <>
-      <div className="ml-4 flex items-center gap-4 p-4 ">
+      <div className="sticky top-0 z-10 ml-4 flex items-center gap-4 border-b bg-white p-4">
         <IconHoverEffect>
           <VscArrowLeft className="h-8 w-8" onClick={router.back} />
         </IconHoverEffect>
