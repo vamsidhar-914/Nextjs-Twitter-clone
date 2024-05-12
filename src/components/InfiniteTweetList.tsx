@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { IconHoverEffect } from "./IconHoverEffect";
 import { api } from "~/trpc/react";
-import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 type Tweet = {
@@ -71,7 +70,6 @@ function TweetCard({
   likeCount,
   likedByMe,
 }: Tweet) {
-  const router = useRouter();
   const trpcUtils = api.useContext();
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
@@ -100,6 +98,14 @@ function TweetCard({
         };
       };
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData);
+      trpcUtils.tweet.infiniteFeed.setInfiniteData(
+        { onlyFollowing: true },
+        updateData,
+      );
+      trpcUtils.tweet.infiniteProfileFeed.setInfiniteData(
+        { userId: user.id },
+        updateData,
+      );
     },
   });
 
